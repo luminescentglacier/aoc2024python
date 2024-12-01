@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "aoc2024python"
+version = "0.1.0"
+description = "Advent of Code 2024"
+authors = ["luminescentglacier <luminescentglacier@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+tqdm = "^4.67.1"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.8.1"
+pytest = "^8.3.3"
+pytest-mock = "^3.14.0"
+requests = "^2.32.3"
+beautifulsoup4 = "^4.12.3"
+pre-commit = "^4.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

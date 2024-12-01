@@ -1,0 +1,54 @@
+version: "3"
+
+dotenv:
+  - ".env"
+
+vars:
+  TITLE: 1
+  YEAR: 2024
+  DAY:
+    sh: date '+%d'
+  DAY_TRIMMED:
+    sh: date '+%d' | sed 's/^0*//'
+
+tasks:
+  leaderboard:
+    desc: "Show AOC private leaderboard"
+    preconditions:
+      - sh: "[ {{.SESSION}} ]"
+        msg: "SESSION env var is not set. Get session cookie value from your browser."
+      - sh: "[ {{.LEADERBOARD_ID}} ]"
+        msg: "LEADERBOARD_ID env var is not set."
+    env:
+      YEAR: "{{.YEAR}}"
+    cmds:
+      - cmd: poetry run python leaderboard.py {{.FILTER_CMD}}
+
+  today:
+    desc: "Show AOC private leaderboard for today's puzzle"
+    cmds:
+      - task: leaderboard
+        vars:
+          FILTER_CMD: "| rg --color never -U '(Day {{.DAY_TRIMMED}}\\n(.|\\n)+?)\\n\\n' -or '$1'"
+
+  download:
+    desc: "Download input for the day"
+    dir: ./day{{.DAY}}
+    status:
+      - test -s "input.txt"
+      - test -s "test.txt"
+    env:
+      DAY: "{{.DAY}}"
+      ADD_TITLE: "{{ .TITLE | default 0 }}"
+    cmds:
+      - curl -f --cookie "session={{.SESSION}}" https://adventofcode.com/{{.YEAR}}/day/{{.DAY_TRIMMED}}/input -o input.txt
+      - curl -f --cookie "session={{.SESSION}}" https://adventofcode.com/{{.YEAR}}/day/{{.DAY_TRIMMED}} -o {{.DAY}}.html
+      - defer: rm {{.DAY}}.html
+      - poetry run python ../puzzle_page_parser.py
+
+  init:
+    desc: "Setup project dir for the day"
+    status:
+      - test -f day{{.DAY}}/__init__.py
+    cmds:
+      - cp -r template day{{.DAY}}
