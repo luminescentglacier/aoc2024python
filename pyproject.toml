@@ -17,6 +17,9 @@ requests = "^2.32.3"
 beautifulsoup4 = "^4.12.3"
 pre-commit = "^4.0.1"
 
+[tool.ruff.lint]
+extend-ignore = ["E731"]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
