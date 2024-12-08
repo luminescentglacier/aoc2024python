@@ -1,5 +1,6 @@
 import math
 from dataclasses import dataclass
+from itertools import chain
 from typing import Self, Any, Iterator
 
 
@@ -13,6 +14,9 @@ class Vec:
 
     def __sub__(self, other: Self) -> Self:
         return Vec(self.x - other.x, self.y - other.y)
+
+    def __neg__(self) -> Self:
+        return Vec(-self.x, -self.y)
 
     def rot(self, degrees: int) -> Self:
         # counterclockwise
@@ -51,6 +55,12 @@ class Grid:
             return Vec(x, y)
         return None
 
+    def find_iter(self, value: Any) -> Iterator[Vec]:
+        for y, row in enumerate(self):
+            for x, val in enumerate(row):
+                if val == value:
+                    yield Vec(x, y)
+
     def oob(self, pos: Vec) -> bool:
         return not (0 <= pos.x < len(self.grid) and 0 <= pos.y < len(self.grid))
 
@@ -74,3 +84,7 @@ class Grid:
 
     def __len__(self) -> int:
         return len(self.grid)
+
+
+def flatten(v):
+    return list(chain(*v))

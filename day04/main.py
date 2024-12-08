@@ -1,13 +1,10 @@
 # --- Day 4: Ceres Search ---
-from itertools import chain
 from pathlib import Path
 from typing import Iterable
 
+from util import flatten
+
 INPUT_FILE = Path(__file__).parent / "input.txt"
-
-
-def flatten(v):
-    return list(chain(*v))
 
 
 def region(field: list | list[list], m: int, n: int) -> Iterable[list[list]]:
