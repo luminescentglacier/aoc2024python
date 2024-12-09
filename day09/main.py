@@ -35,13 +35,14 @@ def part_2(s: str) -> int:
     file_id = 0
     pos = 0
     for i, val in enumerate(s.strip()):
+        val = int(val)
         is_file = i % 2 == 0
         if is_file:
-            files.append((pos, int(val), file_id))
+            files.append((pos, val, file_id))
             file_id += 1
         else:
-            free.append((pos, int(val)))
-        pos += int(val)
+            free.append((pos, val))
+        pos += val
 
     defrag_files = []
     for file_pos, file_size, file_id in files[::-1]:
