@@ -38,7 +38,7 @@ class Grid:
 
     @classmethod
     def from_string(cls, s: str) -> Self:
-        return Grid([list(line) for line in s.splitlines()])
+        return cls([list(line) for line in s.splitlines()])
 
     def get(self, item: Vec, default: Any = None) -> Any:
         try:
@@ -76,7 +76,7 @@ class Grid:
     def __str__(self) -> str:
         s = []
         for row in self:
-            s.append("".join(row))
+            s.append("".join(map(str, row)))
         return "\n".join(s)
 
     def __iter__(self) -> Iterator[list]:
