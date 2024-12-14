@@ -3,13 +3,13 @@ version: "3"
 dotenv:
   - ".env"
 
-vars:
+env:
   TITLE: 1
   YEAR: 2024
-  DAY:
+  CURRENT_DAY:
     sh: date '+%d'
-  DAY_TRIMMED:
-    sh: date '+%d' | sed 's/^0*//'
+  DAY: "{{ .DAY | default .CURRENT_DAY }}"
+  DAY_TRIMMED: '{{trimPrefix "0" .DAY}}'
 
 tasks:
   leaderboard:
