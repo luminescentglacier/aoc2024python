@@ -35,6 +35,9 @@ class Vec:
 class Grid:
     def __init__(self, grid: list[list]):
         self.grid = grid
+        self.height = len(self.grid)
+        self.width = len(self.grid[0])
+        assert all(len(row) == self.width for row in self.grid), "Malformed grid"
 
     @classmethod
     def from_string(cls, s: str) -> Self:
@@ -62,7 +65,7 @@ class Grid:
                     yield Vec(x, y)
 
     def oob(self, pos: Vec) -> bool:
-        return not (0 <= pos.x < len(self.grid) and 0 <= pos.y < len(self.grid))
+        return not (0 <= pos.x < self.width and 0 <= pos.y < self.height)
 
     def __getitem__(self, item: Vec) -> Any:
         return self.grid[item.y][item.x]
@@ -71,7 +74,7 @@ class Grid:
         self.grid[item.y][item.x] = value
 
     def __repr__(self):
-        return f"Grid(rows={len(self.grid)}, cols={len(self.grid[0])})"
+        return f"Grid(height={self.height}, width={self.width})"
 
     def __str__(self) -> str:
         s = []
