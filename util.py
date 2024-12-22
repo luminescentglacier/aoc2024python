@@ -64,6 +64,11 @@ class Grid:
                 if val == value:
                     yield Vec(x, y)
 
+    def items(self) -> Iterator[tuple[Vec, Any]]:
+        for y, row in enumerate(self):
+            for x, val in enumerate(row):
+                yield Vec(x, y), val
+
     def oob(self, pos: Vec) -> bool:
         return not (0 <= pos.x < self.width and 0 <= pos.y < self.height)
 
